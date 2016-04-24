@@ -1,5 +1,3 @@
-#!/usr/bin/python2.7
-
 from ansible.inventory import Inventory
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars import VariableManager
