@@ -10,13 +10,16 @@ import sys
 import os
 import click
 import random
+import subprocess
 
 @click.group()
 @click.option('--inventory', default='', help="Path to inventory")
+@click.option('--vault-password-command', default='', help="command to run to get vault password")
 @click.pass_context
-def cli(ctx, inventory):
+def cli(ctx, inventory, vault_password_command):
     ctx.obj={}
     ctx.obj['inventory'] = inventory
+    ctx.obj['vault_password_command'] = vault_password_command
 
 @cli.command()
 def list_groups():
@@ -57,6 +60,14 @@ def setup_inventory(ctx):
     loader = DataLoader()
     variable_manager = VariableManager()
 
+    if ctx.obj['vault_password_command']:
+        try:
+            vault_password = subprocess.check_output(ctx.obj['vault_password_command'], shell=True)
+        except subprocess.CalledProcessError:
+            print "Vault password command exited with non-zero code"
+            sys.exit(1)
+        loader.set_vault_password(vault_password.rstrip())
+
     try:
         if(ctx.obj['inventory']):
             return Inventory(loader=loader,
@@ -67,7 +78,7 @@ def setup_inventory(ctx):
                              variable_manager=variable_manager)
             
     except AnsibleError as e:
-        if str(e) == 'Decryption failed':
+        if not ctx.obj['vault_password_command'] and str(e) == 'Decryption failed':
             vault_password = getpass.getpass('Enter vault password:')
             loader.set_vault_password(vault_password)
 
