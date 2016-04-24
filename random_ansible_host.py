@@ -17,9 +17,10 @@ import subprocess
 @click.option('--vault-password-command', default='', help="command to run to get vault password")
 @click.pass_context
 def cli(ctx, inventory, vault_password_command):
-    ctx.obj={}
-    ctx.obj['inventory'] = inventory
-    ctx.obj['vault_password_command'] = vault_password_command
+    ctx.obj = {'inventory': inventory,
+               'vault_password_command': vault_password_command,
+               }
+
 
 @cli.command()
 def list_groups():
