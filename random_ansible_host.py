@@ -12,6 +12,7 @@ import click
 import random
 import subprocess
 
+
 @click.group()
 @click.option('--inventory', default='', help="Path to inventory")
 @click.option('--vault-password-command', default='', help="command to run to get vault password")
@@ -25,11 +26,11 @@ def cli(ctx, inventory, vault_password_command):
 @cli.command()
 def list_groups():
     """list all groups"""
-    inventory = setup_inventory()    
-    print ""
+    inventory = setup_inventory()
     print "Possible Groups:"
     for group in inventory.list_groups():
         print '    {}'.format(group)
+
 
 @cli.command()
 @click.argument('group')
@@ -40,6 +41,7 @@ def list_hosts(group):
     print ""
     for host in inventory.list_hosts(group):
         print '    {}'.format(host)
+
 
 @cli.command()
 @click.argument('group')
@@ -62,10 +64,11 @@ def ssh(group, username, ssh_key):
 
     os.system('ssh {}{}'.format(username, random.choice(hosts)))
 
+
 @click.pass_context
 def setup_inventory(ctx):
     """sets up the inventory object for use by other functions"""
-    
+
     loader = DataLoader()
     variable_manager = VariableManager()
 
