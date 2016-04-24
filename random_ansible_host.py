@@ -66,17 +66,19 @@ def setup_inventory(ctx):
             return Inventory(loader=loader,
                              variable_manager=variable_manager)
             
-    # This isn't a very helpful exception, but if it fails we'll
-    # assume that there wasn't a vault password, and we'll request one
-    # and try again
-    except AnsibleError:
-        vault_password = getpass.getpass('Enter vault password:')
-        loader.set_vault_password(vault_password)
+    except AnsibleError as e:
+        if str(e) == 'Decryption failed':
+            vault_password = getpass.getpass('Enter vault password:')
+            loader.set_vault_password(vault_password)
 
-        if(ctx.obj['inventory']):
-            return Inventory(loader=loader,
-                             variable_manager=variable_manager,
-                             host_list=ctx.obj['inventory'])
+            if(ctx.obj['inventory']):
+                return Inventory(loader=loader,
+                                 variable_manager=variable_manager,
+                                 host_list=ctx.obj['inventory'])
+            else:
+                return Inventory(loader=loader,
+                                 variable_manager=variable_manager)
         else:
-            return Inventory(loader=loader,
-                             variable_manager=variable_manager)
+            print "Something went wrong:"
+            print repr(e)
+            sys.exit(1)
