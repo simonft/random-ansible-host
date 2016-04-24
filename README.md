@@ -1,6 +1,7 @@
 # random-ansible-host
 
-SSH into a random host in a given Ansible group. Useful for when you just need to get one, and don't care which. 
+SSH into a random host in a given Ansible group. Useful for when you
+just need to get onto one host in a group, and don't care which.
 
 Usage:
 ```
