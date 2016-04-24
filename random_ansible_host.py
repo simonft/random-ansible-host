@@ -34,6 +34,7 @@ def list_groups():
 @click.argument('group')
 def list_hosts(group):
     """lists the hosts in a group"""
+
     inventory = setup_inventory()
     print ""
     for host in inventory.list_hosts(group):
@@ -45,6 +46,7 @@ def list_hosts(group):
 @click.option('--ssh-key', '-i', default='', help="key for ssh")
 def ssh(group, username, ssh_key):
     """ssh to a random host in the group"""
+
     inventory = setup_inventory()
     if username:
         username = '{}@'.format(username)
@@ -54,9 +56,10 @@ def ssh(group, username, ssh_key):
    
     os.system('ssh {}{}'.format(username, random.choice(inventory.list_hosts(group))))
 
-
 @click.pass_context
 def setup_inventory(ctx):
+    """sets up the inventory object for use by other functions"""
+    
     loader = DataLoader()
     variable_manager = VariableManager()
 
@@ -76,8 +79,9 @@ def setup_inventory(ctx):
         else:
             return Inventory(loader=loader,
                              variable_manager=variable_manager)
-            
+
     except AnsibleError as e:
+        # If it fails to decrypt and a password command hasn't been provided, prompt for one
         if not ctx.obj['vault_password_command'] and str(e) == 'Decryption failed':
             vault_password = getpass.getpass('Enter vault password:')
             loader.set_vault_password(vault_password)
