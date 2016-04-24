@@ -48,13 +48,18 @@ def ssh(group, username, ssh_key):
     """ssh to a random host in the group"""
 
     inventory = setup_inventory()
+    hosts = inventory.list_hosts(group)
+    if not hosts:
+        print "No hosts in host list"
+        sys.exit(1)
+
     if username:
         username = '{}@'.format(username)
     ssh_options = ''
     if ssh_key:
         ssh_options = '{}{}'.format(ssh_options, '-i ssh_key')
-   
-    os.system('ssh {}{}'.format(username, random.choice(inventory.list_hosts(group))))
+
+    os.system('ssh {}{}'.format(username, random.choice(hosts)))
 
 @click.pass_context
 def setup_inventory(ctx):
