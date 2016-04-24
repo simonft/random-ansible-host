@@ -6,6 +6,7 @@ setup(
     py_modules=['random_ansible_host'],
     install_requires=[
         'Click',
+        'ansible',
     ],
     entry_points='''
         [console_scripts]
