@@ -4,13 +4,13 @@ from ansible.inventory import Inventory
 from ansible.parsing.dataloader import DataLoader
 from ansible.vars import VariableManager
 from ansible.errors import AnsibleError
+import click
 
 import getpass
-import sys
 import os
-import click
 import random
 import subprocess
+import sys
 
 
 @click.group()
