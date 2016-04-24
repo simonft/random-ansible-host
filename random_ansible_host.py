@@ -50,7 +50,7 @@ def ssh(group, username, ssh_key):
     inventory = setup_inventory()
     hosts = inventory.list_hosts(group)
     if not hosts:
-        print "No hosts in host list"
+        print "No hosts in provided group"
         sys.exit(1)
 
     if username:
