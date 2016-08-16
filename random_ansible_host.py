@@ -81,7 +81,7 @@ def setup_inventory(ctx):
         loader.set_vault_password(vault_password.rstrip())
     elif os.environ.get('ANSIBLE_VAULT_PASSWORD_FILE'):
         with open(os.environ.get('ANSIBLE_VAULT_PASSWORD_FILE'), 'r') as vault_password_file:
-            loader.set_vault_password(vault_password_file.read())
+            loader.set_vault_password(vault_password_file.read().strip())
 
     try:
         if(ctx.obj['inventory']):
