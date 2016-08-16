@@ -7,3 +7,8 @@ Usage:
 ```
 rah --inventory PATH_TO_INVENTORY_FILE_OR_DIRECTORY ssh ANSIBLE_GROUP
 ```
+
+Installation:
+```
+pip install https://github.com/simonft/random-ansible-host/zipball/master
+```
