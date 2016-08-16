@@ -12,7 +12,7 @@ import sys
 
 
 @click.group()
-@click.option('--inventory', default='', help="Path to inventory")
+@click.option('--inventory', envvar='RAH_ANSIBLE_INVENTORY', default='', help="Path to inventory")
 @click.option('--vault-password-command', default='', help="command to run to get vault password")
 @click.pass_context
 def cli(ctx, inventory, vault_password_command):
